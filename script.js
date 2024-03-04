@@ -1,5 +1,5 @@
 'use strict';
-let player, cursors, platforms;
+let player, cursors, platforms, tilemap, tileset;
 let {KeyCodes} = Phaser.Input.Keyboard;
 
 class Scene extends Phaser.Scene {
@@ -16,21 +16,29 @@ class Scene extends Phaser.Scene {
         });
 
         // TODO: Replace test images with actual sprites
-        this.load.image('chrome', 'assets/chrome-blank.png');
-        this.load.image('train', 'assets/image0-17.png');
-        this.load.image('ios', 'assets/ios_sample.png');
+        this.load.image('chrome', '/assets/chrome-blank.png');
+        this.load.image('train', '/assets/image0-17.png');
+        this.load.image('ios', '/assets/ios_sample.png');
+
+        this.load.image('kenny', '/assets/tileset/kenny_platformer.png');
+        this.load.tilemapTiledJSON('testmap', '/assets/tilemap/test.json');
     }
 
     create = () => {
         this.add.image(800, 500, 'chrome');
-
-        platforms = this.physics.add.staticGroup();
-        platforms.create(400, 450, 'train').setScale(0.5, 0.05).refreshBody();
-        platforms.create(100, 300, 'train').setScale(0.5, 0.05).refreshBody();
         
+        tilemap = this.make.tilemap({key: 'testmap'});
+        tileset = tilemap.addTilesetImage('kenny');
+        
+        platforms = tilemap.createLayer('Platforms', tileset);
+        platforms.setCollisionByExclusion(-1, true);
+
         player = this.physics.add.image(700, 600, 'ios');
         player.setCollideWorldBounds(true);
+        player.setBounce(0.1)
         this.physics.add.collider(player, platforms);
+
+        this.cameras.main.startFollow(player, false, 0.2);
     }
 
     update = () => {
@@ -39,7 +47,7 @@ class Scene extends Phaser.Scene {
             cursors.right.isDown || cursors.D.isDown ? 200 : 0);
 
         if ((cursors.up.isDown || cursors.W.isDown) && player.body.blocked.down) {
-            player.setVelocityY(-330);
+            player.setVelocityY(-400);
         }
     }
 }
@@ -51,7 +59,7 @@ const game = new Phaser.Game({
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
+            gravity: { y: 350 },
             debug: true
         }
     },
