@@ -30,8 +30,6 @@ class Scene extends Phaser.Scene {
         
         player = this.physics.add.image(700, 600, 'ios');
         player.setCollideWorldBounds(true);
-        player.setBounce(0.1);
-
         this.physics.add.collider(player, platforms);
     }
 
@@ -54,7 +52,7 @@ const game = new Phaser.Game({
         default: 'arcade',
         arcade: {
             gravity: { y: 300 },
-            debug: false
+            debug: true
         }
     },
     scene: Scene
