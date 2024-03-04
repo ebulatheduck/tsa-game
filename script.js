@@ -16,12 +16,12 @@ class Scene extends Phaser.Scene {
         });
 
         // TODO: Replace test images with actual sprites
-        this.load.image('chrome', '/assets/chrome-blank.png');
-        this.load.image('train', '/assets/image0-17.png');
-        this.load.image('ios', '/assets/ios_sample.png');
+        this.load.image('chrome', 'assets/chrome-blank.png');
+        this.load.image('train', 'assets/image0-17.png');
+        this.load.image('ios', 'assets/ios_sample.png');
 
-        this.load.image('kenny', '/assets/tileset/kenny_platformer.png');
-        this.load.tilemapTiledJSON('testmap', '/assets/tilemap/test.json');
+        this.load.image('kenny', 'assets/tileset/kenny_platformer.png');
+        this.load.tilemapTiledJSON('testmap', 'assets/tilemap/test.json');
     }
 
     create = () => {
