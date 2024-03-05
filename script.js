@@ -1,5 +1,5 @@
 'use strict';
-let player, cursors, platforms, tilemap, tileset;
+let player, cursors, platforms, tilemap, tileset, boundaries;
 let {KeyCodes} = Phaser.Input.Keyboard;
 
 class Scene extends Phaser.Scene {
@@ -33,12 +33,18 @@ class Scene extends Phaser.Scene {
         platforms = tilemap.createLayer('Platforms', tileset);
         platforms.setCollisionByExclusion(-1, true);
 
-        player = this.physics.add.image(700, 600, 'ios');
-        player.setCollideWorldBounds(true);
-        player.setBounce(0.1)
-        this.physics.add.collider(player, platforms);
+        boundaries = this.physics.add.staticGroup();
+        boundaries.add(this.add.line(tilemap.widthInPixels, tilemap.heightInPixels / 2, 0, 0, 0, tilemap.heightInPixels)); // right
+        boundaries.add(this.add.line(tilemap.widthInPixels / 2, tilemap.heightInPixels, 0, 0, tilemap.widthInPixels)); // bottom
+        boundaries.add(this.add.line(0, tilemap.heightInPixels / 2, 0, 0, 0, tilemap.heightInPixels)); // left
+        boundaries.add(this.add.line(tilemap.widthInPixels / 2, 0, 0, 0, tilemap.widthInPixels)); // top
 
-        this.cameras.main.startFollow(player, false, 0.2);
+        player = this.physics.add.image(29, 355, 'ios');
+        this.physics.add.collider(player, boundaries);
+        this.physics.add.collider(player, platforms);
+        player.setBounce(0.1);
+
+        this.cameras.main.startFollow(player, true, 0.2);
     }
 
     update = () => {
@@ -47,7 +53,7 @@ class Scene extends Phaser.Scene {
             cursors.right.isDown || cursors.D.isDown ? 200 : 0);
 
         if ((cursors.up.isDown || cursors.W.isDown) && player.body.blocked.down) {
-            player.setVelocityY(-400);
+            player.setVelocityY(-450);
         }
     }
 }
