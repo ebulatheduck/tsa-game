@@ -43,6 +43,7 @@ class Scene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.platforms);
         this.player.setBounce(0.1);
 
+        this.water = this.tilemap.createLayer('Water', this.tileset);
         this.cameras.main.startFollow(this.player, true, 0.2);
     }
 
@@ -51,9 +52,15 @@ class Scene extends Phaser.Scene {
             this.cursors.left.isDown || this.cursors.A.isDown ? -200 :
                 this.cursors.right.isDown || this.cursors.D.isDown ? 200 : 0);
 
-        if ((this.cursors.up.isDown || this.cursors.W.isDown) && this.player.body.blocked.down) {
+        this.player.inWater = this.water.getTileAtWorldXY(this.player.x, this.player.y) != null;
+        this.player.setGravity(this.player.inWater ? -300 : 0);
+
+        if (!this.player.inWater && (this.cursors.up.isDown || this.cursors.W.isDown) && this.player.body.blocked.down)
             this.player.setVelocityY(-450);
-        }
+        if (this.player.inWater && (this.cursors.up.isDown || this.cursors.W.isDown))
+            this.player.setVelocityY(-200);
+        if (this.player.inWater && (this.cursors.down.isDown || this.cursors.S.isDown))
+            this.player.setVelocityY(200);
     }
 }
 
