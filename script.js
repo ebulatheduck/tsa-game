@@ -19,7 +19,7 @@ class Scene extends Phaser.Scene {
         this.load.image('train', 'assets/image0-17.png');
         this.load.image('ios', 'assets/ios_sample.png');
 
-        this.load.image('kenny', 'assets/tileset/kenny_platformer.png');
+        this.load.image('kenney', 'assets/tileset/kenney_platformer.png');
         this.load.tilemapTiledJSON('testmap', 'assets/tilemap/test.json');
     }
 
@@ -27,7 +27,7 @@ class Scene extends Phaser.Scene {
         this.add.image(800, 500, 'chrome');
 
         this.tilemap = this.make.tilemap({ key: 'testmap' });
-        this.tileset = this.tilemap.addTilesetImage('kenny');
+        this.tileset = this.tilemap.addTilesetImage('kenney');
 
         this.platforms = this.tilemap.createLayer('Platforms', this.tileset);
         this.platforms.setCollisionByExclusion(-1, true);
