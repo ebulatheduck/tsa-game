@@ -1,8 +1,13 @@
 'use strict';
 const { KeyCodes } = Phaser.Input.Keyboard;
+let scene;
 
 class Scene extends Phaser.Scene {
+    level = 1;
+
     preload = () => {
+        scene = this;
+
         this.cursors = this.input.keyboard.addKeys({
             W: KeyCodes.W,
             A: KeyCodes.A,
@@ -20,13 +25,15 @@ class Scene extends Phaser.Scene {
         this.load.image('ios', 'assets/ios_sample.png');
 
         this.load.image('kenney', 'assets/tileset/kenney_platformer.png');
-        this.load.tilemapTiledJSON('testmap', 'assets/tilemap/test.json');
+        this.load.tilemapTiledJSON(1, 'assets/tilemap/test.json');
+        this.load.tilemapTiledJSON(2, 'assets/tilemap/test2.json');
     }
 
     create = () => {
         this.add.image(800, 500, 'chrome');
 
-        this.tilemap = this.make.tilemap({ key: 'testmap' });
+        if (this.level > 2) this.level = 1;
+        this.tilemap = this.make.tilemap({ key: this.level });
         this.tileset = this.tilemap.addTilesetImage('kenney');
 
         this.platforms = this.tilemap.createLayer('Platforms', this.tileset);
@@ -64,6 +71,11 @@ class Scene extends Phaser.Scene {
         if (this.player.inWater && (this.cursors.down.isDown || this.cursors.S.isDown))
             this.player.setAccelerationY(800);
     }
+
+    nextLevel = () => {
+        this.level++;
+        this.scene.restart();
+    }
 }
 
 const game = new Phaser.Game({
@@ -78,4 +90,8 @@ const game = new Phaser.Game({
         }
     },
     scene: Scene
+});
+
+document.body.addEventListener('keypress', e => {
+    if (e.key == 'e') scene?.nextLevel();
 });
