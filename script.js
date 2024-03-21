@@ -2,15 +2,17 @@
 const { KeyCodes } = Phaser.Input.Keyboard;
 let scene;
 const startpos = [
+    null,
     [326, 478],
     [1038, 286],
-    [1138, 222]
+    [1138, 222],
+    [875, 900]
 ]
 
 class Scene extends Phaser.Scene {
     level = 0;
 
-    preload = () => {
+    preload() {
         scene = this;
 
         this.cursors = this.input.keyboard.addKeys({
@@ -25,7 +27,8 @@ class Scene extends Phaser.Scene {
         });
 
         // TODO: Replace test images with actual sprites
-        this.load.image('chrome', 'assets/chrome-blank.png');
+        this.load.image('bg', 'assets/uncolored_plain.png');
+        this.load.image('ios', 'assets/ios_sample.png');
         this.load.image('frog1', 'assets/frog1.png');
         this.load.image('frog2', 'assets/frog2.png');
 
@@ -33,12 +36,23 @@ class Scene extends Phaser.Scene {
         this.load.tilemapTiledJSON(1, 'assets/tilemap/level1.json');
         this.load.tilemapTiledJSON(2, 'assets/tilemap/test.json');
         this.load.tilemapTiledJSON(3, 'assets/tilemap/test2.json');
+        this.load.tilemapTiledJSON(4, 'assets/tilemap/untitled.json');
     }
 
-    create = () => {
-        this.add.image(800, 500, 'chrome');
+    createTitle() {
+        let button = this.add.text(400, 300, 'click me', {fontFamily: 'Arial'});
+        button.setInteractive();
 
-        this.tilemap = this.make.tilemap({ key: this.level + 1 });
+        button.on('pointerover', () => button.setColor('red'));
+        button.on('pointerout', () => button.setColor('green'));
+        button.on('pointerdown', this.nextLevel, this);
+    }
+
+    create() {
+        if (this.level == 0) return this.createTitle();
+
+        this.add.tileSprite(400, 200, 2048, 1024, 'bg').setScrollFactor(0.05);
+        this.tilemap = this.make.tilemap({ key: this.level });
         this.tileset = this.tilemap.addTilesetImage('kenney');
 
         this.boundaries = this.physics.add.staticGroup();
@@ -48,25 +62,29 @@ class Scene extends Phaser.Scene {
         this.boundaries.add(this.add.line(this.tilemap.widthInPixels / 2, 0, 0, 0, this.tilemap.widthInPixels)); // top
 
         this.player = this.physics.add.image(...startpos[this.level], 'frog1');
-        this.player.setScale(0.5);
-        this.physics.add.collider(this.player, this.boundaries);
-        this.player.setMaxVelocity(800);
         this.player.setBounce(0.1);
+        this.player.setScale(0.5);
+        this.player.setMaxVelocity(800);
+        this.player.body.setSize(128, 128);
 
-        this.water = this.tilemap.createLayer('Water', this.tileset);
+        this.physics.add.collider(this.player, this.boundaries);
         this.cameras.main.startFollow(this.player, true, 0.2);
 
+        this.water = this.tilemap.createLayer('Water', this.tileset);
         this.platforms = this.tilemap.createLayer('Platforms', this.tileset);
         this.platforms.setCollisionByExclusion(-1, true);
         this.physics.add.collider(this.player, this.platforms);
     }
 
-    update = () => {
+    update() {
+        if (this.level == 0) return;
+
+        this.player.inWater = this.water.getTileAtWorldXY(this.player.x, this.player.y) != null;
+
         this.player.setVelocityX(
             this.cursors.left.isDown || this.cursors.A.isDown ? this.player.inWater ? -400 : -300 :
                 this.cursors.right.isDown || this.cursors.D.isDown ? this.player.inWater ? 400 : 300 : 0);
 
-        this.player.inWater = this.water.getTileAtWorldXY(this.player.x, this.player.y) != null;
         this.player.setGravity(this.player.inWater ? -300 : 0);
         this.player.setAcceleration(0);
 
@@ -81,7 +99,7 @@ class Scene extends Phaser.Scene {
             this.player.setAccelerationY(600);
     }
 
-    nextLevel = () => {
+    nextLevel() {
         this.level++;
         this.level %= startpos.length;
         this.scene.restart();
