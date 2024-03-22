@@ -1,0 +1,18 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    border: groove #222;
+    height: 100%;
+}
