@@ -5,9 +5,8 @@ const startpos = [
     null,
     [326, 478],
     [1038, 286],
-    [1138, 222],
     [875, 900]
-]
+];
 
 class Scene extends Phaser.Scene {
     level = 0;
@@ -26,21 +25,22 @@ class Scene extends Phaser.Scene {
             right: KeyCodes.RIGHT
         });
 
-        // TODO: Replace test images with actual sprites
-        this.load.image('bg', 'assets/uncolored_plain.png');
-        this.load.image('ios', 'assets/ios_sample.png');
-        this.load.image('frog1', 'assets/frog1.png');
-        this.load.image('frog2', 'assets/frog2.png');
+        this.load.image('bg', 'assets/background/uncolored_plain.png');
+        this.load.image('frog1', 'assets/frog/1.png');
+        this.load.image('frog2', 'assets/frog/2.png');
+        this.load.image('tad1', 'assets/tadpole/1.png');
+        this.load.image('tad2', 'assets/tadpole/2.png');
+        this.load.image('tad3', 'assets/tadpole/3.png');
+        this.load.image('tad4', 'assets/tadpole/4.png');
 
         this.load.image('kenney', 'assets/tileset/kenney_platformer.png');
         this.load.tilemapTiledJSON(1, 'assets/tilemap/level1.json');
         this.load.tilemapTiledJSON(2, 'assets/tilemap/test.json');
-        this.load.tilemapTiledJSON(3, 'assets/tilemap/test2.json');
-        this.load.tilemapTiledJSON(4, 'assets/tilemap/untitled.json');
+        this.load.tilemapTiledJSON(3, 'assets/tilemap/untitled.json');
     }
 
     createTitle() {
-        let button = this.add.text(400, 300, 'click me', {fontFamily: 'Arial'});
+        let button = this.add.text(400, 300, 'click me', { fontFamily: 'Arial' });
         button.setInteractive();
 
         button.on('pointerover', () => button.setColor('red'));
@@ -51,7 +51,7 @@ class Scene extends Phaser.Scene {
     create() {
         if (this.level == 0) return this.createTitle();
 
-        this.add.tileSprite(400, 200, 2048, 1024, 'bg').setScrollFactor(0.05);
+        this.add.tileSprite(1024, 200, 2048, 1024, 'bg').setScrollFactor(0.1);
         this.tilemap = this.make.tilemap({ key: this.level });
         this.tileset = this.tilemap.addTilesetImage('kenney');
 
@@ -66,6 +66,16 @@ class Scene extends Phaser.Scene {
         this.player.setScale(0.5);
         this.player.setMaxVelocity(800);
         this.player.body.setSize(128, 128);
+
+        this.tadpoles = this.physics.add.group({ allowGravity: false, immovable: true });
+        let tad = this.tilemap.getObjectLayer('Tadpole')?.objects[0];
+        this.tad = this.tadpoles.create(tad.x, tad.y, `tad${this.level}`);
+        this.tad.body.setSize(...(
+            this.level == 1 ? [122, 61] :
+                this.level == 2 ? [88, 34] :
+                    this.level == 3 ? [126, 72] :
+                        this.level == 4 ? [122, 50] : null));
+        this.physics.add.collider(this.player, this.tadpoles, this.nextLevel, null, this);
 
         this.physics.add.collider(this.player, this.boundaries);
         this.cameras.main.startFollow(this.player, true, 0.2);
