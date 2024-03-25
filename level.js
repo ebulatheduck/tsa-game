@@ -2,9 +2,9 @@
 const { KeyCodes } = Phaser.Input.Keyboard;
 const startpos = [
     null,
-    [326, 478],
-    [1038, 286],
     [160.5, 1120],
+    [1038, 286],
+    [352.5, 1120],
 ];
 class LevelScene extends Phaser.Scene {
     level = 1;
@@ -14,6 +14,7 @@ class LevelScene extends Phaser.Scene {
     }
 
     preload() {
+        this.physics.world.drawDebug = false;
         this.cursors = this.input.keyboard.addKeys({
             W: KeyCodes.W,
             A: KeyCodes.A,
@@ -24,8 +25,6 @@ class LevelScene extends Phaser.Scene {
             left: KeyCodes.LEFT,
             right: KeyCodes.RIGHT
         });
-
-        this.load.image('bg', 'assets/background/uncolored_plain.png');
     }
 
     create() {
@@ -34,7 +33,7 @@ class LevelScene extends Phaser.Scene {
             return this.scene.stop();
         }
 
-        this.add.tileSprite(1024, 200, 2048, 1024, 'bg').setScrollFactor(0.1);
+        this.add.tileSprite(768, 200, 2048, 1024, 'bg').setScrollFactor(0.1);
         this.tilemap = this.make.tilemap({ key: this.level });
         this.tileset = this.tilemap.addTilesetImage('kenney');
 

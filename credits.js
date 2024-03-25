@@ -5,6 +5,8 @@ class CreditsScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(0, 0, 'yay you win');
+        this.add.text(0, 0, 'yay you win', {
+            fontFamily: '"Trebuchet MS", sans-serif'
+        });
     }
 }
