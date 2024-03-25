@@ -13,6 +13,17 @@ const game = new Phaser.Game({
     scene: [PreloadScene, TitleScene, LevelScene, CreditsScene]
 });
 
+// debugging keybinds
 document.body.addEventListener('keypress', e => {
+    if (e.key == 'q') debugger;
     if (e.key == 'e') game.scene.scenes[2]?.nextLevel();
+    if (e.key == 'f') {
+        let scene = game.scene.scenes[2];
+        if (scene.physics.world.drawDebug) {
+            scene.physics.world.drawDebug = false;
+            scene.physics.world.debugGraphic.clear();
+        } else {
+            scene.physics.world.drawDebug = true;
+        }
+    }
 });
