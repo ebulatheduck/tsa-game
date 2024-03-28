@@ -1,11 +1,5 @@
 'use strict';
 const { KeyCodes } = Phaser.Input.Keyboard;
-const startpos = [
-    null,
-    [160.5, 1120],
-    [1038, 286],
-    [352.5, 1120],
-];
 class LevelScene extends Phaser.Scene {
     level = 1;
 
@@ -43,15 +37,14 @@ class LevelScene extends Phaser.Scene {
         this.boundaries.add(this.add.line(0, this.tilemap.heightInPixels / 2, 0, 0, 0, this.tilemap.heightInPixels)); // left
         this.boundaries.add(this.add.line(this.tilemap.widthInPixels / 2, 0, 0, 0, this.tilemap.widthInPixels)); // top
 
-        this.player = this.physics.add.image(...startpos[this.level], 'frog1');
+        this.player = this.physics.add.image(160.5, 1120, 'frog1');
         this.player.setBounce(0.1);
         this.player.setScale(0.5);
         this.player.setMaxVelocity(800);
         this.player.body.setSize(128, 128);
 
         this.tadpoles = this.physics.add.group({ allowGravity: false, immovable: true });
-        let tad = this.tilemap.getObjectLayer('Tadpole')?.objects[0];
-        this.tad = this.tadpoles.create(tad.x, tad.y, `tad${this.level}`);
+        this.tad = this.tadpoles.create(8064, 1088, `tad${this.level}`);
         this.tad.body.setSize(...(
             this.level == 1 ? [122, 61] :
                 this.level == 2 ? [88, 34] :
@@ -91,7 +84,7 @@ class LevelScene extends Phaser.Scene {
 
     nextLevel() {
         this.level++;
-        this.level %= startpos.length;
+        this.level %= 4;
         this.scene.restart();
     }
 }

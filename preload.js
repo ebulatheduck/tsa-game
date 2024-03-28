@@ -5,36 +5,27 @@ class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
+        this.cameras.main.setBackgroundColor(''); // black background
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
         progressBox.fillRect(240, 270, 320, 50);
 
-        this.make.text({
-            x: 400,
-            y: 250,
-            text: 'Loading...',
-            style: {
-                font: '20px monospace',
-                fill: '#ffffff'
-            }
+        this.add.text(400, 250, 'Loading...', {
+            font: '20px Courier, monospace',
+            fill: '#ffffff'
         }).setOrigin(0.5);
 
-        var percentText = this.make.text({
-            x: 400,
-            y: 295,
-            text: '0%',
-            style: {
-                font: '18px monospace',
-                fill: '#ffffff'
-            }
+        var percentText = this.add.text(400, 295, '0%', {
+            font: '18px Courier, monospace',
+            fill: '#ffffff'
         }).setOrigin(0.5);
 
-        this.load.on('progress', function(value) {
+        this.load.on('progress', (v) => {
             progressBar.clear();
             progressBar.fillStyle(0xffffff, 1);
-            progressBar.fillRect(250, 280, 300 * value, 30);
-            percentText.setText(parseInt(value * 100) + '%');
+            progressBar.fillRect(250, 280, 300 * v, 30);
+            percentText.setText(parseInt(v * 100) + '%');
         });
 
         this.load.image('frog1', 'assets/frog/1.png');
@@ -45,9 +36,9 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('tad4', 'assets/tadpole/4.png');
         this.load.image('bg', 'assets/background/uncolored_plain.png');
         this.load.image('kenney', 'assets/tileset/kenney_platformer.png');
-        this.load.tilemapTiledJSON(1, 'assets/tilemap/untitled.json');
-        this.load.tilemapTiledJSON(2, 'assets/tilemap/test.json');
-        this.load.tilemapTiledJSON(3, 'assets/tilemap/cave.json');
+        this.load.tilemapTiledJSON(1, 'assets/tilemap/1.json');
+        this.load.tilemapTiledJSON(2, 'assets/tilemap/2.json');
+        this.load.tilemapTiledJSON(3, 'assets/tilemap/3.json');
     }
 
     async create() {

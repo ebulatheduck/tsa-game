@@ -3,6 +3,7 @@ const game = new Phaser.Game({
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    backgroundColor: '#B6D9E7',
     physics: {
         default: 'arcade',
         arcade: {
