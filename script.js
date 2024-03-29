@@ -16,6 +16,7 @@ const game = new Phaser.Game({
 
 // debugging keybinds
 document.body.addEventListener('keypress', e => {
+    return;
     if (e.key == 'q') debugger;
     if (e.key == 'e') game.scene.scenes[2]?.nextLevel();
     if (e.key == 'f') {
