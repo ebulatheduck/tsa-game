@@ -7,7 +7,7 @@ class TitleScene extends Phaser.Scene {
     create() {
         this.add.image(400, 300, 'bg');
         this.add.image(400, 150, 'title').setScale(0.7);
-        this.add.image(76, 530, 'wasd').setScale(0.1);
+        this.add.image(100, 476, 'wasd').setScale(0.9);
         this.add.image(747, 549, 'frog1').setScale(0.5);
         let button = this.add.text(400, 350, 'Play', {
             fontFamily: '"Days One", "Trebuchet MS", sans-serif',

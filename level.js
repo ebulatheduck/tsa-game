@@ -76,7 +76,13 @@ class LevelScene extends Phaser.Scene {
 
         if (!this.player.inWater && (this.cursors.up.isDown || this.cursors.W.isDown) && this.player.body.blocked.down) {
             this.player.setVelocityY(-450);
-            this.sound.play('jump');
+            if (!this.jumpSoundPlaying) {
+                this.sound.play('jump');
+                this.jumpSoundPlaying = true;
+                setTimeout(() => {
+                    this.jumpSoundPlaying = false;
+                }, 500);
+            }
         }
         if (this.player.inWater && (this.cursors.up.isDown || this.cursors.W.isDown))
             this.player.setAccelerationY(-600);
