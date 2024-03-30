@@ -74,8 +74,10 @@ class LevelScene extends Phaser.Scene {
         if (this.player.inWater && this.player.texture.key !== 'frog2') this.player.setTexture('frog2');
         if (!this.player.inWater && this.player.texture.key !== 'frog1') this.player.setTexture('frog1');
 
-        if (!this.player.inWater && (this.cursors.up.isDown || this.cursors.W.isDown) && this.player.body.blocked.down)
+        if (!this.player.inWater && (this.cursors.up.isDown || this.cursors.W.isDown) && this.player.body.blocked.down) {
             this.player.setVelocityY(-450);
+            this.sound.play('jump');
+        }
         if (this.player.inWater && (this.cursors.up.isDown || this.cursors.W.isDown))
             this.player.setAccelerationY(-600);
         if (this.player.inWater && (this.cursors.down.isDown || this.cursors.S.isDown))
@@ -83,8 +85,16 @@ class LevelScene extends Phaser.Scene {
     }
 
     nextLevel() {
-        this.level++;
-        this.level %= 4;
-        this.scene.restart();
+        this.player.body.destroy();
+        this.physics.world.colliders.destroy();
+        this.tad.setAngularVelocity(1000);
+
+        this.sound.play('win', { rate: 0.85 });
+
+        setTimeout(() => {
+            this.level++;
+            this.level %= 4;
+            this.scene.restart();
+        }, 1500);
     }
 }

@@ -31,6 +31,7 @@ class CreditsScene extends Phaser.Scene {
         let index = 0;
         setInterval(() => {
             if (index >= members.length) return index = 0;
+            if (!members[index].body.blocked.down) return;
             members[index].setVelocityY(-200);
             index++;
         }, 300);

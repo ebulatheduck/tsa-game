@@ -34,8 +34,12 @@ class PreloadScene extends Phaser.Scene {
         this.load.image('tad2', 'assets/tadpole/2.png');
         this.load.image('tad3', 'assets/tadpole/3.png');
         this.load.image('tad4', 'assets/tadpole/4.png');
+        this.load.image('title', 'assets/title.png');
+        this.load.image('wasd', 'assets/wasdarrows.png');
         this.load.image('bg', 'assets/background/uncolored_plain.png');
         this.load.image('kenney', 'assets/tileset/kenney_platformer.png');
+        this.load.audio('jump', ['assets/sfx/jump.mp3', 'assets/sfx/jump.ogg']);
+        this.load.audio('win', ['assets/sfx/win.mp3', 'assets/sfx/win.ogg']);
         this.load.tilemapTiledJSON(1, 'assets/tilemap/1.json');
         this.load.tilemapTiledJSON(2, 'assets/tilemap/2.json');
         this.load.tilemapTiledJSON(3, 'assets/tilemap/3.json');
