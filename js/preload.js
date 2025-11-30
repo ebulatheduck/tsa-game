@@ -28,21 +28,21 @@ class PreloadScene extends Phaser.Scene {
             percentText.setText(parseInt(v * 100) + '%');
         });
 
-        this.load.image('frog1', 'assets/frog/1.png');
-        this.load.image('frog2', 'assets/frog/2.png');
-        this.load.image('tad1', 'assets/tadpole/1.png');
-        this.load.image('tad2', 'assets/tadpole/2.png');
-        this.load.image('tad3', 'assets/tadpole/3.png');
-        this.load.image('tad4', 'assets/tadpole/4.png');
-        this.load.image('title', 'assets/title.png');
-        this.load.image('wasd', 'assets/wasdarrows.png');
-        this.load.image('bg', 'assets/background/uncolored_plain.png');
-        this.load.image('kenney', 'assets/tileset/kenney_platformer.png');
-        this.load.audio('jump', ['assets/sfx/jump.mp3', 'assets/sfx/jump.ogg']);
-        this.load.audio('win', ['assets/sfx/win.mp3', 'assets/sfx/win.ogg']);
-        this.load.tilemapTiledJSON(1, 'assets/tilemap/1.json');
-        this.load.tilemapTiledJSON(2, 'assets/tilemap/2.json');
-        this.load.tilemapTiledJSON(3, 'assets/tilemap/3.json');
+        this.load.image('frog1', '../assets/frog1.png');
+        this.load.image('frog2', '../assets/frog2.png');
+        this.load.image('tad1', '../assets/tad1.png');
+        this.load.image('tad2', '../assets/tad2.png');
+        this.load.image('tad3', '../assets/tad3.png');
+        this.load.image('tad4', '../assets/tad4.png');
+        this.load.image('title', '../assets/title.png');
+        this.load.image('wasd', '../assets/wasdarrows.png');
+        this.load.image('bg', '../assets/uncolored_plain.png');
+        this.load.image('kenney', '../assets/kenney_platformer.png');
+        this.load.audio('jump', ['../assets/jump.mp3', '../assets/jump.ogg']);
+        this.load.audio('win', ['../assets/win.mp3', '../assets/win.ogg']);
+        this.load.tilemapTiledJSON(1, '../assets/level1.json');
+        this.load.tilemapTiledJSON(2, '../assets/level2.json');
+        this.load.tilemapTiledJSON(3, '../assets/level3.json');
     }
 
     async create() {
